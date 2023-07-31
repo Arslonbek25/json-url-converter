@@ -2,8 +2,7 @@ import urllib.parse
 
 
 def decode_str(data):
-    url_decoded_string = urllib.parse.unquote(data)
-    return url_decoded_string
+    return urllib.parse.unquote(data)
 
 
 def decode_dict(d):
