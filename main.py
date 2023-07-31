@@ -5,6 +5,8 @@ from jsonurl import decode_dict, decode_str, encode
 
 e_dir = "encoded"
 d_dir = "decoded"
+os.makedirs(e_dir, exist_ok=True)
+os.makedirs(d_dir, exist_ok=True)
 e_files = os.listdir(e_dir)
 d_files = os.listdir(d_dir)
 
