@@ -9,6 +9,20 @@ def get_encoded_chars(url):
     ).replace("%", "")
 
 
+def get_encoded_chars_from_dict(data):
+    stack = list(data.values())
+    encoded_values = ""
+    while stack:
+        value = stack.pop()
+        if isinstance(value, dict):
+            stack.extend(value.values())
+        elif isinstance(value, list):
+            stack.extend(value)
+        elif isinstance(value, str):
+            encoded_values += value
+    return get_encoded_chars(encoded_values)
+
+
 def is_valid_json(data):
     try:
         json.loads(data)
@@ -25,11 +39,6 @@ def decode_dict(d):
     if isinstance(d, dict):
         return {urllib.parse.unquote(k): decode_dict(v) for k, v in d.items()}
     elif isinstance(d, str):
-        # pairs = dict(urllib.parse.parse_qsl(d))
-        # print(pairs)
-        # if "&" in pairs and "=" in pairs:
-        #     return {k: urllib.parse.unquote(v) for k, v in pairs.items()}
-        # else:
         return urllib.parse.unquote(d)
     elif isinstance(d, list):
         return [decode_dict(v) for v in d]
@@ -38,13 +47,15 @@ def decode_dict(d):
 
 
 def encode(data, safe):
-    return urllib.parse.quote(data, safe=safe + " \n")
+    return urllib.parse.quote(data, safe=safe + "\n")
 
 
-if __name__ == "__main__":
-    t = encode(
-        "https://www.google.com/search?q=python+url+encoding&oq=python+url+encoding&aqs=chrome..69i57j0l7.2873j0j7&sourceid=chrome&ie=UTF-8",
-        safe="",
-    )
-
-    print(t)
+def encode_dict(d, safe):
+    if isinstance(d, dict):
+        return {k: encode_dict(v, safe) for k, v in d.items()}
+    elif isinstance(d, list):
+        return [encode_dict(v, safe) for v in d]
+    elif isinstance(d, str):
+        return encode(d, safe)
+    else:
+        return d
