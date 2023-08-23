@@ -47,7 +47,7 @@ def decode_dict(d):
 
 
 def encode(data, safe):
-    return urllib.parse.quote(data, safe=safe + "\n")
+    return urllib.parse.quote(data, safe=safe + " \n")
 
 
 def encode_dict(d, safe):
@@ -59,3 +59,5 @@ def encode_dict(d, safe):
         return encode(d, safe)
     else:
         return d
+
+# print(string.punctuation)

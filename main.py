@@ -58,14 +58,14 @@ def encode_files():
             print(fn, f"Z{safe}Z")
             data = json.loads(data)
             data = encode_dict(data, safe)
+            data = json.dumps(data, indent=4)
         else:
             safe = get_encoded_chars(encoded_data)
             data = encode(data, safe)
-            data = json.dumps(data, indent=4)
 
         write_file(e_file, data)
 
 
 # Uncomment the function you want to run
-decode_files()
-# encode_files()
+# decode_files()
+encode_files()
